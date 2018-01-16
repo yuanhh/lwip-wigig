@@ -6,10 +6,10 @@
 struct ethernetif {
   void (* low_level_init)(void *i, uint8_t *addr, void *mcast); ///< the hardware init function
   int (* low_level_startoutput)(void *i); ///< check room
-  void (* low_level_output)(void *i, void *data, uint16_t len); ///< write blocks
+  void (* low_level_output)(void *i, void *data, uint16_t len, uint16_t offset); ///< write blocks
   void (* low_level_endoutput)(void *i, uint16_t total_len);  ///< end writing, send
   int (* low_level_startinput)(void *i);  ///< check existence, get length
-  void (* low_level_input)(void *i, void *data, uint16_t len); ///< read blocks
+  void (* low_level_input)(void *i, void *data, uint16_t len, uint16_t offset); ///< read blocks
   void (* low_level_endinput)(void *i);   ///< end reading
   void (* low_level_input_nomem)(void *i, uint16_t len); ///< drop/queue
   void *internals; ///< trivial internal stuff, like for example I/O address, passed to low level functions

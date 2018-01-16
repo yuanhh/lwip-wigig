@@ -6,8 +6,8 @@
 #include "ethernetif.h"
 
 #include "lwip/pbuf.h"
+#include "mrloop/mrloopbf_release.h"
 #include "mem.h"
-#include "mrloopbf_release.h"
 
 #define MLWIGIGTXBUF 4096
 

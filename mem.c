@@ -56,18 +56,3 @@ void mmap_free(void *addr)
     munmap(addr, sb.st_size);
     close(fd);
 }
-
-void mmap_read(void *addr, void *src, size_t len)
-{
-    mlock(addr, len);
-    memcpy(src, addr, len);
-    memset(addr, 0, len);
-    munlock(addr, len);
-}
-void mmap_write(void *addr, void *src, size_t len)
-{
-    mlock(addr, len);
-    memset(addr, 0, len);
-    memcpy(addr, src, len);
-    munlock(addr, len);
-}
