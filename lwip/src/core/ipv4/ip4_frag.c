@@ -131,7 +131,7 @@ ip_reass_tmr(void)
      * clean up the incomplete fragment assembly */
     if (r->timer > 0) {
       r->timer--;
-      LWIP_DEBUGF(IP_REASS_DEBUG, ("ip_reass_tmr: timer dec %"U16_F"\n",(u16_t)r->timer));
+      LWIP_DEBUGF(IP_REASS_DEBUG, ("ip_reass_tmr: timer dec %" U16_F "\n",(u16_t)r->timer));
       prev = r;
       r = r->next;
     } else {
@@ -528,7 +528,7 @@ ip4_reass(struct pbuf *p)
        in the reassembly buffer. If so, we proceed with copying the
        fragment into the buffer. */
     if (IP_ADDRESSES_AND_ID_MATCH(&ipr->iphdr, fraghdr)) {
-      LWIP_DEBUGF(IP_REASS_DEBUG, ("ip4_reass: matching previous fragment ID=%"X16_F"\n",
+      LWIP_DEBUGF(IP_REASS_DEBUG, ("ip4_reass: matching previous fragment ID=%" X16_F "\n",
         lwip_ntohs(IPH_ID(fraghdr))));
       IPFRAG_STATS_INC(ip_frag.cachehit);
       break;
@@ -564,7 +564,7 @@ ip4_reass(struct pbuf *p)
     ipr->flags |= IP_REASS_FLAG_LASTFRAG;
     ipr->datagram_len = offset + len;
     LWIP_DEBUGF(IP_REASS_DEBUG,
-     ("ip4_reass: last fragment seen, total len %"S16_F"\n",
+     ("ip4_reass: last fragment seen, total len %" S16_F "\n",
       ipr->datagram_len));
   }
   /* find the right place to insert this pbuf */
