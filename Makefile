@@ -1,4 +1,4 @@
-CC = g++
+CC=g++
 CCDEP=$(CC)
 
 #CFLAGS += -DLWIP_DEBUG
@@ -12,14 +12,16 @@ LWIPARCH=$(TOPDIR)
 #default assumes it's a dir named lwip at the same level as the contrib module
 LWIPDIR=$(TOPDIR)/lwip/src
 
-LIBDIR = -Llib/x86_64
+ML_LIBDIR = -Llib/x86_64
 LDFLAGS = -pthread
-WGLDFLAGS = -lMrLoopBF -lusb-1.0
+ML_LIBS = -lMrLoopBF -lusb-1.0 -lpthread
 
-CFLAGS += -Wall	-ggdb3										\
+CFLAGS += -Wall	-g -std=c++11							\
 	-I$(LWIPDIR)/include -I.							\
 	-I$(LWIPARCH)/include/lwip -I$(LWIPARCH)/include	\
 	-I$(LWIPDIR)/include/ipv4
+
+ML_LFLAGS = -DRF_STATUS $(ML_LIBDIR) $(ML_LIBS)
 
 # COREFILES, CORE4FILES: The minimum set of files needed for lwIP.
 COREFILES=$(LWIPDIR)/core/def.c 		\
@@ -61,7 +63,7 @@ APIFILES=$(LWIPDIR)/api/tcpip.c			\
 # NETIFFILES: Files implementing various generic network interface functions.'
 NETIFFILES=$(LWIPDIR)/netif/ethernet.c
 
-MAIN_FILES=ethernetif_driver.c lowlevel_wigig.c mem.c
+MAIN_FILES=ethernetif_driver.c lowlevel_wigig.c mem.c lwip-wigig.c
 
 # LWIPFILES: All the above.
 LWIPFILES=$(MAIN_FILES) $(COREFILES) $(CORE4FILES) $(NETIFFILES) $(APIFILES)
@@ -83,7 +85,7 @@ clean:
 	find . -name \*.o |xargs --no-run-if-empty rm
 
 $(LWIPMAIN): $(OBJS)
-	$(CC) $(LIBDIR) $(LDFLAGS) $(WGLDFLAGS) -o $(LWIPMAIN) $?
+	$(CC) -o $(LWIPMAIN) $? $(ML_LFLAGS)
 
 depend dep: .depend
 

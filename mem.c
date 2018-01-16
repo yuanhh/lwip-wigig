@@ -14,7 +14,7 @@ void *mmap_alloc(size_t len)
     int result;
     int protection = PROT_READ | PROT_WRITE;
     int visibility = MAP_ANONYMOUS | MAP_SHARED;
-    char *addr;
+    void *addr;
 
     fd = open(FILEPATH, O_RDWR | O_CREAT | O_TRUNC, (mode_t)0666);
     if (fd == -1) {

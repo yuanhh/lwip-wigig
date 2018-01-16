@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 
     tcpip_init(NULL, NULL);
 
-    wigigif_init();
+    wigigif_init(&wigigif);
 
     inet_aton("10.0.0.3", &ip);
     inet_aton("255.255.255.0", &netmask);
@@ -33,7 +33,7 @@ int main(int argc, char** argv)
     netif_add(&netif, (ip4_addr_t*)&ip,
             (ip4_addr_t*)&netmask,
             (ip4_addr_t*)&gw,
-            NULL, ethernetif_init, tcpip_input);
+            &wigigif, ethernetif_init, tcpip_input);
     netif_set_default(&netif);
     netif_set_up(&netif);
 

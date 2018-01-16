@@ -57,7 +57,8 @@ low_level_startoutput(void *i)
     void
 low_level_output(void *i, void *data, uint16_t len, uint16_t offset)
 {
-    memcpy(i + offset, data, len);
+    uint8_t *p = (uint8_t *)i;
+    memcpy((void *)(p + offset), data, len);
 }
 /**
  * This function begins the actual transmission of the packet, ending the process
@@ -68,7 +69,7 @@ low_level_output(void *i, void *data, uint16_t len, uint16_t offset)
     void
 low_level_endoutput(void *i, uint16_t total_len)
 {
-    ML_Transfer(i, (int)total_len);
+    ML_Transfer((uint8_t *)i, (int)total_len);
 
     munlock(i, MLWIGIGTXBUF);
 }
@@ -86,7 +87,7 @@ low_level_startinput(void *i)
         perror("output mlock");
 
     do {
-        ML_Receiver(i, &len);
+        ML_Receiver((uint8_t *)i, &len);
     } while (len == 0);
 
     return 0;
@@ -101,7 +102,8 @@ low_level_startinput(void *i)
     void
 low_level_input(void *i, void *data, uint16_t len, uint16_t offset)
 {
-    memcpy(data, i + offset, len);
+    uint8_t *p = (uint8_t *)i;
+    memcpy(data, (void *)(p + offset), len);
 }
 
 /**

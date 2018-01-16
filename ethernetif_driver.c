@@ -27,7 +27,7 @@ void ethernetif_input(struct netif *netif)
     int frames = 0;
     uint16_t offset = 0;
 
-    ethernetif = (struct ethernetif*) netif->state;
+    ethernetif = (struct ethernetif *)netif->state;
     do {
         if((len = ethernetif->low_level_startinput(ethernetif->internals)) == 0)
             break;
@@ -59,7 +59,7 @@ void ethernetif_input(struct netif *netif)
             LINK_STATS_INC(link.drop);
             return;
         }
-        ethhdr = (struct eth_hdr *) p->payload;
+        ethhdr = (struct eth_hdr *)p->payload;
 
         switch (htons(ethhdr->type)) {
             case ETHTYPE_IP:
@@ -81,7 +81,7 @@ void ethernetif_input(struct netif *netif)
 
 static err_t ethernetif_linkoutput(struct netif *netif, struct pbuf *p)
 {
-    struct ethernetif *ethernetif = (struct ethernetif *) netif->state;
+    struct ethernetif *ethernetif = (struct ethernetif *)netif->state;
     struct pbuf *q;
     uint16_t offset = 0;
 
@@ -115,7 +115,7 @@ err_t ethernetif_init(struct netif *netif)
     LWIP_ASSERT("netif != NULL", (netif != NULL));
     LWIP_ASSERT("state != NULL", (netif->state != NULL));
 
-    ethernetif = (struct ethernetif *) netif->state;
+    ethernetif = (struct ethernetif *)netif->state;
 
     NETIF_INIT_SNMP(netif, snmp_ifType_ethernet_csmacd, 1000000000);
 
