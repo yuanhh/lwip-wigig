@@ -37,6 +37,7 @@ int main(int argc, char** argv)
     netif_set_default(&netif);
     netif_set_up(&netif);
 
+    pause();
     return 0;
 }
 

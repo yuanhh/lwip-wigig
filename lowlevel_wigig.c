@@ -12,8 +12,8 @@
 #define MLWIGIGTXBUF 4096
 
 struct low_level_mem {
-    void *tx_buf;
-    void *rx_buf;
+    const void *tx_buf;
+    const void *rx_buf;
 };
 
 /**
@@ -36,7 +36,7 @@ low_level_init(void *i, uint8_t *addr, void *mcast)
 
     m->tx_buf = mmap_alloc(MLWIGIGTXBUF);
     m->rx_buf = mmap_alloc(MLWIGIGTXBUF);
-    i = m;
+    *(struct low_level_mem **)i = m;
 }
 
 /**
@@ -52,7 +52,7 @@ low_level_init(void *i, uint8_t *addr, void *mcast)
     int
 low_level_startoutput(void *i)
 {
-    void *p = ((struct low_level_mem *)i)->tx_buf;
+    const void *p = ((struct low_level_mem *)i)->tx_buf;
 
     while (mlock(p, MLWIGIGTXBUF) == -1)
         perror("output mlock");
@@ -85,7 +85,7 @@ low_level_output(void *i, void *data, uint16_t len, uint16_t offset)
     void
 low_level_endoutput(void *i, uint16_t total_len)
 {
-    void *p = ((struct low_level_mem *)i)->tx_buf;
+    const void *p = ((struct low_level_mem *)i)->tx_buf;
     ML_Transfer((uint8_t *)p, (int)total_len);
 
     munlock(i, MLWIGIGTXBUF);
@@ -99,7 +99,7 @@ low_level_endoutput(void *i, uint16_t total_len)
 low_level_startinput(void *i)
 {
     int len = MLWIGIGTXBUF;
-    void *p = ((struct low_level_mem *)i)->rx_buf;
+    const void *p = ((struct low_level_mem *)i)->rx_buf;
 
     while (mlock(i, MLWIGIGTXBUF) == -1)
         perror("output mlock");
@@ -131,7 +131,7 @@ low_level_input(void *i, void *data, uint16_t len, uint16_t offset)
     void
 low_level_endinput(void *i)
 {
-    void *p = ((struct low_level_mem *)i)->rx_buf;
+    const void *p = ((struct low_level_mem *)i)->rx_buf;
     munlock(p, MLWIGIGTXBUF);
 }
 

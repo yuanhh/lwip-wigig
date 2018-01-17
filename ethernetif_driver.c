@@ -132,7 +132,7 @@ err_t ethernetif_init(struct netif *netif)
     netif->mtu = ETHERNET_MTU;
     netif->flags = NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP | NETIF_FLAG_LINK_UP;
 
-    ethernetif->low_level_init(ethernetif->internals, ethernetif->address, NULL);
+    ethernetif->low_level_init(&ethernetif->internals, ethernetif->address, NULL);
 
     sys_thread_new("ethernetif_thread", ethernetif_input, netif, DEFAULT_THREAD_STACKSIZE, DEFAULT_THREAD_PRIO);
 
