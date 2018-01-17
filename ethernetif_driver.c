@@ -4,8 +4,9 @@
 #include "lwip/def.h"
 #include "lwip/mem.h"
 #include "lwip/pbuf.h"
-#include <lwip/stats.h>
-#include <lwip/snmp.h>
+#include "lwip/sys.h"
+#include "lwip/stats.h"
+#include "lwip/snmp.h"
 #include "netif/etharp.h"
 
 #include "ethernetif.h"
@@ -18,8 +19,9 @@
 #define ETHERNETIF_MAXFRAMES 0
 #endif
 
-void ethernetif_input(struct netif *netif)
+void ethernetif_input(void *arg)
 {
+    struct netif *netif = (struct netif *)arg;
     struct ethernetif *ethernetif;
     struct eth_hdr *ethhdr;
     struct pbuf *p, *q;
@@ -131,6 +133,8 @@ err_t ethernetif_init(struct netif *netif)
     netif->flags = NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP | NETIF_FLAG_LINK_UP;
 
     ethernetif->low_level_init(ethernetif->internals, ethernetif->address, NULL);
+
+    sys_thread_new("ethernetif_thread", ethernetif_input, netif, DEFAULT_THREAD_STACKSIZE, DEFAULT_THREAD_PRIO);
 
     return ERR_OK;
 }
