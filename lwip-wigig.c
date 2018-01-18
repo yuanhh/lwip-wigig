@@ -2,14 +2,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netinet/ip.h>
-#include <arpa/inet.h>
 
 #include "lwip/tcpip.h"
 #include "lwip/init.h"
 #include "lwip/netif.h"
+#include "lwip/ip_addr.h"
 
 #include "ethernetif.h"
 #include "ethernetif_driver.h"
@@ -23,26 +20,24 @@ int main(int argc, char** argv)
 {
     struct ethernetif wigigif;
     struct netif netif;
-    struct in_addr ip, netmask, gw;
+    ip4_addr_t ip, netmask, gw;
 
     tcpip_init(NULL, NULL);
 
     wigigif_init(&wigigif);
 
-    inet_aton("10.0.0.3", &ip);
-    inet_aton("255.255.255.0", &netmask);
-    inet_aton("10.0.0.1", &gw);
-    netif_add(&netif, (ip4_addr_t*)&ip,
-            (ip4_addr_t*)&netmask,
-            (ip4_addr_t*)&gw,
+    IP4_ADDR(&ip, 10, 0, 0, 2);
+    IP4_ADDR(&netmask, 255, 255, 255, 0);
+    IP4_ADDR(&gw, 10, 0, 0, 1);
+    netif_add(&netif, &ip, &netmask, &gw,
             &wigigif, ethernetif_init, tcpip_input);
     netif_set_default(&netif);
     netif_set_up(&netif);
 
-    if (argv[1][0] == 's')
-        udpecho_init((void *)1);
-    else
-        udpecho_init((void *)2);
+    if (argc != 2)
+        return 0;
+
+    udpecho_init(argv[1]);
 
     return 0;
 }

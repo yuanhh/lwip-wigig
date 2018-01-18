@@ -83,10 +83,10 @@ udpecho_thread(void *arg)
     void
 udpecho_init(void *arg)
 {
-    int mode = *(int *)arg;
-    if (mode == 1)
+    char *av = (char *)arg;
+    if (av[0] == 's')
         sys_thread_new("udpecho_thread", udpecho_thread, NULL, DEFAULT_THREAD_STACKSIZE, DEFAULT_THREAD_PRIO);
-    else
+    else if (av[0] == 'c')
         sys_thread_new("udpsender_thread", udpsender_thread, NULL, DEFAULT_THREAD_STACKSIZE, DEFAULT_THREAD_PRIO);
 
 }
