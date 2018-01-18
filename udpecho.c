@@ -68,6 +68,7 @@ udpecho_thread(void *arg)
                 LWIP_DEBUGF(LWIP_DBG_ON, ("netbuf_copy failed\n"));
             } else {
                 buffer[buf->p->tot_len] = '\0';
+                printf("recv: %s\n", buffer);
                 err = netconn_send(conn, buf);
                 if(err != ERR_OK) {
                     LWIP_DEBUGF(LWIP_DBG_ON, ("netconn_send failed: %d\n", (int)err));

@@ -39,6 +39,8 @@ int main(int argc, char** argv)
 
     udpecho_init(argv[1]);
 
+    pause();
+
     return 0;
 }
 
