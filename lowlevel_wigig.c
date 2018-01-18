@@ -74,7 +74,10 @@ low_level_startoutput(void *i)
 low_level_output(void *i, void *data, uint16_t len, uint16_t offset)
 {
     uint8_t *p = (uint8_t *)((struct low_level_mem *)i)->tx_buf;
-    memcpy((void *)(p + offset), data, len);
+    if (offset + len <= MLWIGIGTXBUF)
+        memcpy((void *)(p + offset), data, len);
+    else
+        fprintf(stderr, "message trunc");
 }
 /**
  * This function begins the actual transmission of the packet, ending the process
@@ -86,7 +89,10 @@ low_level_output(void *i, void *data, uint16_t len, uint16_t offset)
 low_level_endoutput(void *i, uint16_t total_len)
 {
     const void *p = ((struct low_level_mem *)i)->tx_buf;
-    ML_Transfer((uint8_t *)p, (int)total_len);
+    if (total_len <= MLWIGIGTXBUF)
+        ML_Transfer((uint8_t *)p, MLWIGIGTXBUF);
+    else
+        fprintf(stderr, "message trunc");
 
     munlock(i, MLWIGIGTXBUF);
 }

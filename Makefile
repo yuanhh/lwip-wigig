@@ -63,7 +63,7 @@ APIFILES=$(LWIPDIR)/api/tcpip.c			\
 # NETIFFILES: Files implementing various generic network interface functions.'
 NETIFFILES=$(LWIPDIR)/netif/ethernet.c
 
-MAIN_FILES=ethernetif_driver.c lowlevel_wigig.c mem.c lwip-wigig.c
+MAIN_FILES=ethernetif_driver.c lowlevel_wigig.c mem.c lwip-wigig.c udpecho.c
 
 # LWIPFILES: All the above.
 LWIPFILES=$(MAIN_FILES) $(COREFILES) $(CORE4FILES) $(NETIFFILES) $(APIFILES)

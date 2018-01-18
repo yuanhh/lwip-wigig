@@ -15,6 +15,8 @@
 #include "ethernetif_driver.h"
 #include "lowlevel_wigig.h"
 
+#include "udpecho.h"
+
 void wigigif_init(struct ethernetif *wigigif);
 
 int main(int argc, char** argv)
@@ -37,7 +39,11 @@ int main(int argc, char** argv)
     netif_set_default(&netif);
     netif_set_up(&netif);
 
-    pause();
+    if (argv[1][0] == 's')
+        udpecho_init((void *)1);
+    else
+        udpecho_init((void *)2);
+
     return 0;
 }
 
