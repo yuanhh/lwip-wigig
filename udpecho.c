@@ -4,7 +4,6 @@
 
 #include "lwip/opt.h"
 
-
 #if LWIP_NETCONN
 
 #include "lwip/ip_addr.h"
@@ -32,7 +31,7 @@ udpsender_thread(void *arg)
     while (1) {
         memset(buffer, 0, 4096);
         fgets(buffer, 4096, stdin);
-        if(netbuf_copy(buf, buffer, sizeof(buffer)) != buf->p->tot_len) {
+        if(netbuf_ref(buf, buffer, sizeof(buffer)) != buf->p->tot_len) {
             LWIP_DEBUGF(LWIP_DBG_ON, ("netbuf_copy failed\n"));
         } else {
             buffer[buf->p->tot_len] = '\0';
